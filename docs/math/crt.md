@@ -30,15 +30,15 @@ $$
 ### 算法流程
 
 1. 计算所有模数的积 $n$；
-2. 对于第 $i$ 个方程：
-	1. 计算 $m_i=\frac{n}{n_i}$；
-	2. 计算 $m_i$ 在模 $n_i$ 意义下的[逆元](/math/inverse/) $m_i^{-1}$；
-	3. 计算 $c_i=m_im_i^{-1}$（**不要对 $n_i$ 取模**）。
+2.  对于第 $i$ 个方程：
+    1. 计算 $m_i=\frac{n}{n_i}$；
+    2. 计算 $m_i$ 在模 $n_i$ 意义下的[逆元](/math/inverse/) $m_i^{-1}$；
+    3. 计算 $c_i=m_im_i^{-1}$（**不要对 $n_i$ 取模**）。
 3. 方程组的唯一解为：$a=\sum_{i=1}^k a_ic_i \pmod n$。
 
 ### 伪代码
 
-```plain
+```text
 1 → n
 0 → ans
 for i = 1 to k
@@ -93,6 +93,41 @@ $$
 
 推荐练习：BZOJ 1951
 
+## 比较两 CRT 下整数
+
+考虑 CRT, 不妨假设$n_1\leq n_2 \leq ... \leq n_k$
+
+$$
+\left \{
+\begin{array}{c}
+x &\equiv& a_1 \pmod {n_1} \\
+x &\equiv& a_2 \pmod {n_2} \\
+  &\vdots& \\
+x &\equiv& a_n \pmod {n_k} \\
+\end{array}
+\right.
+$$
+
+与 PMR(Primorial Mixed Radix) 表示
+
+$x=b_1+b_2n_1+b_3n_1n_2...+b_kn_1n_2...n_{k-1} ,b_i\in [0,n_i)$
+
+将数字转化到 PMR 下, 逐位比较即可
+
+转化方法考虑依次对 PMR 取模
+
+$$
+\begin{align}
+b_1&=a_1 \mod n_1\\
+b_2&=(a_2-b_1)c_{1,2} \mod n_2\\
+b_3&=((a_3-b_1')c_{1,3}-x_2')c_{2,3} \mod n_3\\
+&...\\
+b_k&=(...((a_k-b_1)c_{1,k}-b_2)c_{2,k})-...)c_{k-1,k} \mod n_k
+\end{align}
+$$
+
+其中$c_{i,j}$表示$n_i$对$n_j$的逆元,$c_{i,j}n_i=1 \mod n_j$
+
 ## 扩展：模数不互质的情况
 
 ### 两个方程
@@ -112,3 +147,11 @@ $$
 用上面的方法两两合并就可以了……
 
 推荐练习：POJ 2891
+
+[【模板】扩展中国剩余定理](https://www.luogu.org/problemnew/show/P4777)
+
+[\[NOI2018\] 屠龙勇士](https://www.luogu.org/problemnew/show/P4774)
+
+[\[TJOI2009\] 猜数字](https://www.luogu.org/problemnew/show/P3868)
+
+[\[SDOI2010\] 古代猪文](https://www.luogu.org/problemnew/show/P2480)
